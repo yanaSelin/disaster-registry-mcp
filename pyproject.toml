@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcp-disaster-server"
+version = "0.1.0"
+description = "MCP server for querying Kaggle natural disaster data (1900-2021 EOSDIS) via pandas"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.0.0",
+    "pandas>=2.0.0",
+]
+
+[project.scripts]
+mcp-disaster-server = "mcp_disaster.server:run"
+
+[tool.hatch.build.targets.wheel]
+packages = ["mcp_disaster"]
