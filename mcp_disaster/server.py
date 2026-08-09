@@ -34,10 +34,12 @@ def _ensure_csv(path: Path) -> None:
 
     username = os.environ.get("KAGGLE_USERNAME")
     key = os.environ.get("KAGGLE_KEY")
-    if not (username and key):
+    api_token = os.environ.get("KAGGLE_API_TOKEN")
+
+    if not ((username and key) or api_token):
         raise RuntimeError(
             f"Disaster CSV not found at {path}. "
-            "Set KAGGLE_USERNAME and KAGGLE_KEY to auto-download, "
+            "Set KAGGLE_USERNAME+KAGGLE_KEY or KAGGLE_API_TOKEN to auto-download, "
             "or place the CSV at that path manually."
         )
 
@@ -45,6 +47,9 @@ def _ensure_csv(path: Path) -> None:
         import kaggle  # type: ignore[import-not-found]
     except ImportError as exc:
         raise RuntimeError("kaggle package not installed — run: pip install kaggle") from exc
+
+    if api_token and not (username and key):
+        os.environ["KAGGLE_TOKEN"] = api_token
 
     path.parent.mkdir(parents=True, exist_ok=True)
     print(f"[disaster-server] Downloading {_KAGGLE_DATASET} from Kaggle...", file=sys.stderr)
