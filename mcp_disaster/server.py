@@ -45,7 +45,6 @@ def _ensure_csv(path: Path) -> None:
     except ImportError as exc:
         raise RuntimeError("kaggle package not installed — run: pip install kaggle") from exc
 
-    os.environ["KAGGLE_TOKEN"] = api_token
     path.parent.mkdir(parents=True, exist_ok=True)
     print(f"[disaster-server] Downloading {_KAGGLE_DATASET} from Kaggle...", file=sys.stderr)
     kaggle.api.authenticate()
