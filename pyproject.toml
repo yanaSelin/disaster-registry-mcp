@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "MCP server for querying Kaggle natural disaster data (1900-2021 EOSDIS) via pandas"
 requires-python = ">=3.11"
 dependencies = [
-    "mcp>=1.0.0",
+    "mcp>=1.0.0,<2.0.0",
     "pandas>=2.0.0",
     "kaggle>=1.6.0",
 ]
