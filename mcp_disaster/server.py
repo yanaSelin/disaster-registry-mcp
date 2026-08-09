@@ -9,6 +9,7 @@ Configure the CSV path via the DISASTER_CSV_PATH env var.
 Entry point (used by uvx): mcp-disaster-server
 """
 import os
+import sys
 from pathlib import Path
 
 import pandas as pd
@@ -16,7 +17,47 @@ from mcp.server.fastmcp import FastMCP
 
 from .queries import get_disaster_statistics_impl, search_disasters_impl
 
-DATA_PATH = Path(os.environ.get("DISASTER_CSV_PATH", "data/natural_disasters.csv"))
+_KAGGLE_DATASET = "brsdincer/all-natural-disasters-19002021-eosdis"
+
+# Persistent cache in user home — survives across uvx runs.
+# Override with DISASTER_CSV_PATH for testing.
+DATA_PATH = Path(
+    os.environ.get("DISASTER_CSV_PATH")
+    or str(Path.home() / ".mcp-disaster-server" / "natural_disasters.csv")
+)
+
+
+def _ensure_csv(path: Path) -> None:
+    """Download the disaster CSV from Kaggle if not present. Raises on failure."""
+    if path.exists():
+        return
+
+    username = os.environ.get("KAGGLE_USERNAME")
+    key = os.environ.get("KAGGLE_KEY")
+    if not (username and key):
+        raise RuntimeError(
+            f"Disaster CSV not found at {path}. "
+            "Set KAGGLE_USERNAME and KAGGLE_KEY to auto-download, "
+            "or place the CSV at that path manually."
+        )
+
+    try:
+        import kaggle  # type: ignore[import-not-found]
+    except ImportError as exc:
+        raise RuntimeError("kaggle package not installed — run: pip install kaggle") from exc
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    print(f"[disaster-server] Downloading {_KAGGLE_DATASET} from Kaggle...", file=sys.stderr)
+    kaggle.api.authenticate()
+    kaggle.api.dataset_download_files(_KAGGLE_DATASET, path=str(path.parent), unzip=True, quiet=True)
+
+    csvs = [f for f in path.parent.glob("*.csv") if f != path]
+    if csvs and not path.exists():
+        csvs[0].rename(path)
+    print(f"[disaster-server] Dataset saved to {path}", file=sys.stderr)
+
+
+_ensure_csv(DATA_PATH)
 
 mcp = FastMCP("disaster-server")
 
@@ -48,6 +89,9 @@ async def search_disasters(
 ) -> str:
     """Search natural disaster records with optional filters.
 
+    Covers global natural disaster events from 1900 to 2021 (EOSDIS dataset).
+    Does NOT include events after 2021 — use news tools for recent disasters.
+
     Args:
         disaster_type: Category like 'Flood', 'Earthquake', 'Storm', 'Cyclone'.
             Empty string means no filter.
@@ -75,7 +119,7 @@ async def get_disaster_statistics(
     metric: str = "total_deaths",
     top_n: int = 10,
 ) -> str:
-    """Get aggregate natural disaster statistics.
+    """Get aggregate natural disaster statistics from the 1900–2021 EOSDIS dataset.
 
     Args:
         group_by: Grouping dimension. Valid values: 'disaster_type', 'country',
