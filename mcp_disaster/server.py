@@ -50,7 +50,7 @@ def _ensure_csv(path: Path) -> None:
     kaggle.api.authenticate()
     kaggle.api.dataset_download_files(_KAGGLE_DATASET, path=str(path.parent), unzip=True, quiet=True)
 
-    csvs = [f for f in path.parent.glob("*.csv") if f != path]
+    csvs = [f for f in path.parent.rglob("*.csv") if f != path]
     if csvs and not path.exists():
         csvs[0].rename(path)
     print(f"[disaster-server] Dataset saved to {path}", file=sys.stderr)
