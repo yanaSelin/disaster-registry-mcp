@@ -1,0 +1,31 @@
+year,disaster_type,country,region,continent,total_deaths,total_affected
+2020,Flood,China,Eastern Asia,Asia,279,13500000
+2020,Storm,United States of America,Northern America,Americas,185,1200000
+2019,Earthquake,Albania,Southern Europe,Europe,51,17000
+2019,Flood,Iran,Western Asia,Asia,77,9500
+2019,Cyclone,India,Southern Asia,Asia,89,6200000
+2018,Tsunami,Indonesia,South-Eastern Asia,Asia,4340,220000
+2018,Flood,Japan,Eastern Asia,Asia,230,8000
+2017,Hurricane,Puerto Rico,Caribbean,Americas,2975,3300000
+2017,Earthquake,Mexico,Central America,Americas,369,250000
+2016,Earthquake,Ecuador,South America,Americas,663,163000
+2015,Earthquake,Nepal,Southern Asia,Asia,8964,8200000
+2015,Flood,Pakistan,Southern Asia,Asia,238,500000
+2013,Typhoon,Philippines,South-Eastern Asia,Asia,7354,24000000
+2012,Drought,United States of America,Northern America,Americas,123,56000000
+2011,Earthquake,Japan,Eastern Asia,Asia,19846,368820
+2011,Flood,Thailand,South-Eastern Asia,Asia,813,13500000
+2010,Earthquake,Haiti,Caribbean,Americas,222570,3700000
+2010,Flood,China,Eastern Asia,Asia,3222,140000000
+2008,Earthquake,China,Eastern Asia,Asia,87476,45976596
+2005,Hurricane,United States of America,Northern America,Americas,1833,2900000
+2005,Earthquake,Pakistan,Southern Asia,Asia,73338,5128000
+2004,Tsunami,Indonesia,South-Eastern Asia,Asia,165708,532898
+2004,Tsunami,India,Southern Asia,Asia,16389,654512
+2003,Heat Wave,France,Western Europe,Europe,19490,0
+2001,Earthquake,India,Southern Asia,Asia,20005,6321812
+2000,Flood,Mozambique,Eastern Africa,Africa,800,4500000
+1999,Earthquake,Turkey,Western Asia,Asia,17127,600000
+1998,Flood,China,Eastern Asia,Asia,3656,230000000
+1995,Earthquake,Japan,Eastern Asia,Asia,6430,541636
+1991,Cyclone,Bangladesh,Southern Asia,Asia,138866,15438849

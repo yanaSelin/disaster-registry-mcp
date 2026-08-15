@@ -34,9 +34,14 @@ DISASTER_CSV_PATH=/path/to/natural_disasters.csv mcp-disaster-server
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `DISASTER_CSV_PATH` | Yes | Path to the EOSDIS natural disasters CSV |
+| `KAGGLE_API_TOKEN` | First run only | Kaggle API token for auto-downloading the CSV on first launch. Not needed if the CSV already exists at `DISASTER_CSV_PATH`. |
+| `DISASTER_CSV_PATH` | No | Override the CSV path. Defaults to `~/.mcp-disaster-server/natural_disasters.csv`. Useful in tests or CI to point at the 30-row sample fixture. |
 
 ## Data
 
-Download the CSV from Kaggle: *All Natural Disasters 1900-2021 / EOSDIS* dataset.
-The server normalizes column names at startup (lowercase, underscores, no punctuation).
+The server auto-downloads the Kaggle *All Natural Disasters 1900-2021 / EOSDIS* dataset
+on first launch (requires `KAGGLE_API_TOKEN`) and caches it at
+`~/.mcp-disaster-server/natural_disasters.csv`. Subsequent runs reuse the cached file.
+Column names are normalized at startup (lowercase, underscores, no punctuation).
+
+See [docs/architecture.md](docs/architecture.md) for design decisions.
